@@ -14,7 +14,6 @@ CRGB leds[NUM_LEDS];
 
 volatile bool stopA = false;
 volatile bool stopB = false;
-bool direction = false;
 
 // String data[2];
 // String buf = "";
@@ -30,8 +29,8 @@ void setup()
   FastLED.addLeds<WS2811, DATA_PIN, BRG>(leds, NUM_LEDS);
   pinMode(ENDSTOP_A, INPUT);
   pinMode(ENDSTOP_B, INPUT);
-  attachInterrupt(digitalPinToInterrupt(ENDSTOP_A), stopMotorA, FALLING);
-  attachInterrupt(digitalPinToInterrupt(ENDSTOP_B), stopMotorB, FALLING);
+  attachInterrupt(digitalPinToInterrupt(ENDSTOP_A), stopMotorA, RISING);
+  attachInterrupt(digitalPinToInterrupt(ENDSTOP_B), stopMotorB, RISING);
   pinMode(MOTOR_A, OUTPUT);
   pinMode(MOTOR_B, OUTPUT);
 }
@@ -49,19 +48,23 @@ void ledMap(uint32_t color, int ledcount)
 void stopMotorA(){
   stopA = true;
   digitalWrite(MOTOR_A, LOW);
+  digitalWrite(MOTOR_B, LOW);
 }
 void stopMotorB(){
   stopB = true;
   digitalWrite(MOTOR_B, LOW);
+  digitalWrite(MOTOR_A, LOW);
 }
 
-void powerMotor(bool direction, uint8_t speed){
-  if(!direction && !stopA){
-    analogWrite(speed, MOTOR_A);
+void powerMotor(int direction, uint8_t speed){
+  if(direction == 0 && !stopA){
+    digitalWrite(MOTOR_A, HIGH);
     digitalWrite(MOTOR_B, LOW);
-  } else if (direction && !stopB){
-    analogWrite(speed, MOTOR_A);
-    digitalWrite(MOTOR_B, LOW);
+    stopB = false;
+  } else if (direction == 1 && !stopB){
+    digitalWrite(MOTOR_B, HIGH);
+    digitalWrite(MOTOR_A, LOW);
+    stopA = false;
   }
 }
 
