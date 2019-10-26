@@ -12,7 +12,8 @@
 
 CRGB leds[NUM_LEDS];
 
-volatile bool stop = false;
+volatile bool stopA = false;
+volatile bool stopB = false;
 bool direction = false;
 
 // String data[2];
@@ -25,11 +26,12 @@ void setup()
 {
   Serial.begin(115200);
   Serial.println("LED_Control");
+  delay(1000);
   FastLED.addLeds<WS2811, DATA_PIN, BRG>(leds, NUM_LEDS);
   pinMode(ENDSTOP_A, INPUT);
   pinMode(ENDSTOP_B, INPUT);
-  attachInterrupt(digitalPinToInterrupt(ENDSTOP_A), stopMotor, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(ENDSTOP_B), stopMotor,CHANGE);
+  attachInterrupt(digitalPinToInterrupt(ENDSTOP_A), stopMotorA, FALLING);
+  attachInterrupt(digitalPinToInterrupt(ENDSTOP_B), stopMotorB, FALLING);
   pinMode(MOTOR_A, OUTPUT);
   pinMode(MOTOR_B, OUTPUT);
 }
@@ -37,29 +39,30 @@ void setup()
 void ledMap(uint32_t color, int ledcount)
 {
   FastLED.clear();
-  ledcount = map(ledcount, 0, 100, 0, 15);
+  //ledcount = map(ledcount, 0, 100, 0, 15);
   for (int i = 0; i <= ledcount; i++)
   {
     leds[i] = color;
   }
 }
 
-void stopMotor(){
-  stop = true;
+void stopMotorA(){
+  stopA = true;
+  digitalWrite(MOTOR_A, LOW);
+}
+void stopMotorB(){
+  stopB = true;
+  digitalWrite(MOTOR_B, LOW);
 }
 
-void powerMotor(bool direction, int8_t speed){
-  while(!stop){
-    if(direction = true){
-      analogWrite(speed, MOTOR_A);
-      digitalWrite(MOTOR_B, LOW);
-    } else{
-      analogWrite(speed, MOTOR_B);
-      digitalWrite(MOTOR_A, LOW);
-    }
+void powerMotor(bool direction, uint8_t speed){
+  if(!direction && !stopA){
+    analogWrite(speed, MOTOR_A);
+    digitalWrite(MOTOR_B, LOW);
+  } else if (direction && !stopB){
+    analogWrite(speed, MOTOR_A);
+    digitalWrite(MOTOR_B, LOW);
   }
-  digitalWrite(MOTOR_A, LOW);
-  digitalWrite(MOTOR_B, LOW);
 }
 
 void processData(){
@@ -97,7 +100,7 @@ void processData(){
 
 void loop()
 {
-  while (!Serial.available()){
+  while (Serial.available() != 0x00){
     char c = Serial.read();
     if (c == '\n'){
       newDataAvailable = true;
@@ -107,4 +110,6 @@ void loop()
     }
     processData();
   }
+  FastLED.clear();
+  
 }
