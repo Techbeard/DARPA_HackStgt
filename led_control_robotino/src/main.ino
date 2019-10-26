@@ -2,9 +2,18 @@
 #include <FastLED.h>
 
 #define NUM_LEDS 15
-#define DATA_PIN 2
+#define DATA_PIN 4
+
+#define ENDSTOP_A 2
+#define ENDSTOP_B 3
+
+#define MOTOR_A 5
+#define MOTOR_B 6
 
 CRGB leds[NUM_LEDS];
+
+volatile bool stop = false;
+bool direction = false;
 
 // String data[2];
 // String buf = "";
@@ -16,7 +25,13 @@ void setup()
 {
   Serial.begin(115200);
   Serial.println("LED_Control");
-  FastLED.addLeds<WS2811, DATA_PIN, BRG>(leds, NUM_LEDS); // put your setup code here, to run once:
+  FastLED.addLeds<WS2811, DATA_PIN, BRG>(leds, NUM_LEDS);
+  pinMode(ENDSTOP_A, INPUT);
+  pinMode(ENDSTOP_B, INPUT);
+  attachInterrupt(digitalPinToInterrupt(ENDSTOP_A), stopMotor, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(ENDSTOP_B), stopMotor,CHANGE);
+  pinMode(MOTOR_A, OUTPUT);
+  pinMode(MOTOR_B, OUTPUT);
 }
 
 void ledMap(uint32_t color, int ledcount)
@@ -28,46 +43,68 @@ void ledMap(uint32_t color, int ledcount)
     leds[i] = color;
   }
 }
-void loop()
-{
 
-  if (Serial.available())
-  {
+void stopMotor(){
+  stop = true;
+}
 
-    char c = Serial.read();
-    if (c == '\n')
-    {
-      // buf = "";
-      newDataAvailable = true;
-    }
-    else
-    {
-      buf[bufIdx] = c;
-      bufIdx++;
+void powerMotor(bool direction, int8_t speed){
+  while(!stop){
+    if(direction = true){
+      analogWrite(speed, MOTOR_A);
+      digitalWrite(MOTOR_B, LOW);
+    } else{
+      analogWrite(speed, MOTOR_B);
+      digitalWrite(MOTOR_A, LOW);
     }
   }
+  digitalWrite(MOTOR_A, LOW);
+  digitalWrite(MOTOR_B, LOW);
+}
 
+void processData(){
   if (newDataAvailable)
   {
-
     newDataAvailable = false;
 
     Serial.println(buf);
-    uint32_t value;
-    int value1;
-    sscanf(buf, "%06lX,%d", &value, &value1);
-    // int value1 = 20;
-    // sscanf(data[1].c_str(), "%3d", &value1);
-    // 
-    ledMap(value, value1);
+    uint32_t color;
+    int led;
+    uint8_t speed;
+    int motor;
+    sscanf(buf, "%06lX,%d,%d,%d", &color, &led, &speed, &motor);
+
+    ledMap(color, led);
     FastLED.show();
 
-    Serial.print("data0: ");
-    Serial.println(value);
-    Serial.print("data1: ");
-    Serial.println(value1);
+    if(speed > 0){
+      powerMotor(motor, speed);
+    }
+
+    Serial.print("color: ");
+    Serial.println(color);
+    Serial.print("led: ");
+    Serial.println(led);
+    Serial.print("speed: ");
+    Serial.println(speed);
+    Serial.print("direction: ");
+    Serial.println(motor);
 
     bufIdx = 0;
     memset(buf, 0, sizeof(buf));
+  }
+}
+
+void loop()
+{
+  while (!Serial.available()){
+    char c = Serial.read();
+    if (c == '\n'){
+      newDataAvailable = true;
+    } else {
+      buf[bufIdx] = c;
+      bufIdx++;
+    }
+    processData();
   }
 }
