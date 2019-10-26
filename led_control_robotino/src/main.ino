@@ -12,8 +12,8 @@
 
 CRGB leds[NUM_LEDS];
 
-volatile bool stop = false;
-bool direction = false;
+volatile bool stopA = false;
+volatile bool stopB = false;
 
 // String data[2];
 // String buf = "";
@@ -25,11 +25,12 @@ void setup()
 {
   Serial.begin(115200);
   Serial.println("LED_Control");
+  delay(1000);
   FastLED.addLeds<WS2811, DATA_PIN, BRG>(leds, NUM_LEDS);
   pinMode(ENDSTOP_A, INPUT);
   pinMode(ENDSTOP_B, INPUT);
-  attachInterrupt(digitalPinToInterrupt(ENDSTOP_A), stopMotor, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(ENDSTOP_B), stopMotor,CHANGE);
+  attachInterrupt(digitalPinToInterrupt(ENDSTOP_A), stopMotorA, RISING);
+  attachInterrupt(digitalPinToInterrupt(ENDSTOP_B), stopMotorB, RISING);
   pinMode(MOTOR_A, OUTPUT);
   pinMode(MOTOR_B, OUTPUT);
 }
@@ -37,29 +38,34 @@ void setup()
 void ledMap(uint32_t color, int ledcount)
 {
   FastLED.clear();
-  ledcount = map(ledcount, 0, 100, 0, 15);
+  //ledcount = map(ledcount, 0, 100, 0, 15);
   for (int i = 0; i <= ledcount; i++)
   {
     leds[i] = color;
   }
 }
 
-void stopMotor(){
-  stop = true;
-}
-
-void powerMotor(bool direction, int8_t speed){
-  while(!stop){
-    if(direction = true){
-      analogWrite(speed, MOTOR_A);
-      digitalWrite(MOTOR_B, LOW);
-    } else{
-      analogWrite(speed, MOTOR_B);
-      digitalWrite(MOTOR_A, LOW);
-    }
-  }
+void stopMotorA(){
+  stopA = true;
   digitalWrite(MOTOR_A, LOW);
   digitalWrite(MOTOR_B, LOW);
+}
+void stopMotorB(){
+  stopB = true;
+  digitalWrite(MOTOR_B, LOW);
+  digitalWrite(MOTOR_A, LOW);
+}
+
+void powerMotor(int direction, uint8_t speed){
+  if(direction == 0 && !stopA){
+    digitalWrite(MOTOR_A, HIGH);
+    digitalWrite(MOTOR_B, LOW);
+    stopB = false;
+  } else if (direction == 1 && !stopB){
+    digitalWrite(MOTOR_B, HIGH);
+    digitalWrite(MOTOR_A, LOW);
+    stopA = false;
+  }
 }
 
 void processData(){
@@ -97,7 +103,7 @@ void processData(){
 
 void loop()
 {
-  while (!Serial.available()){
+  while (Serial.available() != 0x00){
     char c = Serial.read();
     if (c == '\n'){
       newDataAvailable = true;
@@ -107,4 +113,6 @@ void loop()
     }
     processData();
   }
+  FastLED.clear();
+  
 }
