@@ -1,0 +1,36 @@
+{
+  "name": "hackathon_starter_webapp",
+  "version": "1.0.0",
+  "description": "A hackathon template for a webapp",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Marcel Ochsendorf",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "body-parser": "^1.19.0",
+    "chalk": "^2.4.2",
+    "ejs": "^2.7.1",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.6-alpha.5",
+    "express-list-endpoints": "^4.0.1",
+    "express-session": "^1.17.0",
+    "got": "^9.6.0",
+    "mqtt": "^3.0.0",
+    "node-cron": "^2.0.3",
+    "randomcolor": "^0.5.4",
+    "randomstring": "^1.1.5",
+    "request": "^2.88.0",
+    "rosnodejs": "^3.0.1",
+    "rss": "^1.2.2",
+    "sanitizer": "^0.1.3",
+    "serialport": "^7.1.5",
+    "sessionstore": "^1.3.5",
+    "socket.io": "^2.3.0",
+    "tingodb": "^0.6.1",
+    "uuid": "^3.3.3",
+    "web-push": "^3.4.1"
+  }
+}

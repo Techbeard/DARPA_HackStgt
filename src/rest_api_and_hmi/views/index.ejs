@@ -1,0 +1,583 @@
+<html lang="en">
+
+<head>
+
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/landing-page.css" rel="stylesheet">
+    <link href="/css/main.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Robotino Control">
+    <meta name="author" content="Hackaton Stuttgart"">
+    <meta http-equiv=" cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <title>Robotino Control</title>
+    <link rel='icon' href='img/festo_logo.png' type='image/x-icon' sizes="20x13" />
+
+</head>
+
+<body class="container" marginwidth="20" marginheight="20" topmargin="20" leftmargin="20">
+
+    <nav class="navbar navbar-light bg-light static-top">
+        <div class="container">
+            <a href="/"><img id="Bild1" src="img/festo_logo.png" height="30px"></a>
+            <p style="font-size: 40px; color:#042D55 ;"><%= app_name  %></p>
+            <a href="/"><img id="Bild2" src="img/Logo_Darpa2.png" height="40px"></a>
+        </div>
+    </nav>
+    <p></p>
+    <p>
+        <button class="btn btn-primary" type="button" onclick="change()">Close all</button>
+    </p>
+
+    <!-- -----------------------------------------------------------------------------------------  -->
+    <div class="accordion" id="accordionExample">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                        aria-expanded="true" aria-controls="collapseOne">
+                        Transportation-Targets
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
+                <div class="card-body">
+                    <div class="container">
+                        <div class="row">
+                            <p style="color:black; font-size:100%;"><i>Please choose a target for Robotino</i></p>
+                        </div>
+                        <div class="row">
+                            <button type="button" class="btn btn-danger">Target 00 - Home</button>
+                            &nbsp;&nbsp;
+                            <button type="button" class="btn btn-warning">Target 01</button>
+                            &nbsp;&nbsp;
+                            <button type="button" class="btn btn-danger">Target 02</button>
+                            &nbsp;&nbsp;
+                            <button type="button" class="btn btn-warning">Target 03</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                        data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Remote Control
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
+                <div class="card-body">
+                    <center>
+                        <p style="color:black; font-size:140%;"><b>Control your Robotino!</b></p>
+                    </center>
+                    <p style="color:black; font-size:1pt;"><br>&nbsp;&nbsp;</p>
+                    <div class="row">
+                        <!--------------------------------------------------------------------------------------->
+                        <div class="col-5">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-4" style="background-color: #ffffff; height: 100px;">
+                                        <p align="right"><button type="button" class="btn-arrow_normal_wn"
+                                                aria-label="Left Align" id="forward_left" onclick="mv('forward_left')">
+                                                <p style="color:black;"></p>
+                                            </button></p>
+                                    </div>
+                                    <div class="col-4" style="background-color: #ffffff;height: 100px;">
+                                        <center><button type="button" class="btn-arrow_normal_n" aria-label="Left Align"
+                                                id="forward" onclick="mv('forward')">
+                                                <p style="color:black;" id="forward"></p>
+                                        </center></button>
+                                    </div>
+                                    <div class="col-4" style="background-color: #ffffff;height: 100px;">
+                                        <button type="button" class="btn-arrow_normal_no" id="forward_right"
+                                            onclick="mv('forward_right')">
+                                            <p style="color:black;"></p>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4" style="background-color: #ffffff; height: 100px;">
+                                        <p align="right">
+                                            <button type="button" class="btn-arrow_normal_w" id="left"
+                                                onclick="mv('left')">
+                                                <p style="color:black;"></p>
+                                            </button>
+                                        </p>
+                                    </div>
+                                    <div class="col-4" style="background-color: #ffffff;height: 100px;">
+                                        <center><button type="button" class="btn-arrow_stop" id="stop"
+                                                onclick="mv('stop')">
+                                                <p style="color:black;"></p>
+                                        </center></button>
+                                    </div>
+                                    <div class="col-4" style="background-color: #ffffff;height: 100px;">
+                                        <button type="button" class="btn-arrow_normal_o" id="right"
+                                            onclick="mv('right')">
+                                            <p style="color:black;"></p>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4" style="background-color: #ffffff; height: 100px;">
+                                        <p align="right"><button type="button" class="btn-arrow_normal_sw"
+                                                aria-label="Left Align" id="backward_left"
+                                                onclick="mv('backward_left')">
+                                                <p style="color:black;"></p>
+                                            </button></p>
+                                    </div>
+                                    <div class="col-4" style="background-color: #ffffff;height: 100px;">
+                                        <center><button type="button" class="btn-arrow_normal_s" aria-label="Left Align"
+                                                id="backward" onclick="mv('backward')">
+                                                <p style="color:black;"></p>
+                                        </center></button>
+                                    </div>
+                                    <div class="col-4" style="background-color: #ffffff;height: 100px;">
+                                        <button type="button" class="btn-arrow_normal_os" id="backward_right">
+                                            <p style="color:black;"></p>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--------------------------------------------------------------------------------------->
+                        <div class="col-2">
+                            <div class="container">
+                                <div class="row">
+                                    <p align="right"><button type="button" class="btn-arrow_curved_up"
+                                            aria-label="Left Align" id="rotate_left" onclick="mv('rotate_left')">
+                                            <p style="color:black;"></p>
+                                        </button></p>
+                                </div>
+                                <div class="row">
+                                    <p style="color:black; font-size:50pt;">&nbsp;&nbsp;</p>
+                                </div>
+                                <div class="row" style="background-color: #ffffff;height: 100px;">
+                                    <center><button type="button" class="btn-arrow_curved_down" aria-label="Left Align"
+                                            id="rotate_right" onclick="mv('rotate_right')">
+                                            <p style="color:black;"></p>
+                                    </center></button>
+                                </div>
+                            </div>
+                        </div>
+                        <!--------------------------------------------------------------------------------------->
+                        <div class="col-5">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-4" style="background-color: #ffffff; height: 100px;">
+                                        <button type="button" class="btn btn-light" id="gripper_open"
+                                            onclick="gripper('open')">Gripper open</button>
+                                    </div>
+                                    <div class="col-4" style="background-color: #ffffff;height: 100px;">
+                                        <button type="button" class="btn btn-dark" id="gripper_close"
+                                            onclick="gripper('close')">Gripper Close</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <p style="color:black; font-size:20pt;">&nbsp;&nbsp;</p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4" style="background-color: #ffffff; height: 100px;">
+                                        <button type="button" class="btn btn-light"
+                                            onclick="plattform('close')">Tailboard down</button>
+                                    </div>
+                                    <div class="col-4" style="background-color: #ffffff;height: 100px;">
+                                        <button type="button" class="btn btn-dark" onclick="plattform('open')">Tailboard
+                                            open</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--------------------------------------------------------------------------------------->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingThree">
+                <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                        data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Video Stream
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree">
+                <div class="card-body">
+                    <div class="container" style="border:3px solid #cecece;">
+                        <div class="row">
+                            <div class="col-6">
+                                <img src="" id="img_cam0" width="600px">
+                            </div>
+                            <!--   <div class="col-6">
+                                MARCEL - VIDEO HIER
+                            </div>-->
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <p style="color:black; font-size: 18;"><b>
+
+                                        <p style="color:black; font-size: 8;"><i>
+                                                Unfortunately, there is only one CameraStream possible. Robotino does
+                                                not allow a second static stream.
+                                            </i></p>
+
+                                        <!--<p style="color:black; font-size: 18;"><b>
+                                            Video Stream 2
+                                        </b></p>
+                                </div>
+                                -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingFive">
+                <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                        data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                        Sensor Data
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseFive" class="collapse" aria-labelledby="headingFive">
+                <div class="card-body">
+                    <div class="container">
+                        <div class="col-6">
+                        </div>
+                        <div class="col-6">
+                            <table class="myTable">
+                                <tr>
+                                    <th>Sensor</th>
+                                    <th>Wert</th>
+                                </tr>
+                                <tr>
+                                    <td>Battery Voltage</td>
+                                    <td id="pwr_voltage"></td>
+                                </tr>
+                                <tr>
+                                    <td>Low-Battery-Flag</td>
+                                    <td id="pwr_batt"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingSix">
+                <h2 class="mb-0">
+                    <button id="test" class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                        data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                        About Robotino
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseSix" class="collapse" aria-labelledby="headingSix">
+                <div class="card-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-3">
+                                <img id="Bild3" src="img/robotino_foto.png" height="300px">
+                            </div>
+                            <div class="col-9">
+                                <p style="color:black; font-size:12pt; font-size: 1vw;">
+                                    Robotino V4 was modified to fullfill the Hackaton-Stuttgart-Task.
+                                    The explanation on this side is limited to the
+                                    additional-Robotino-Hardware-Modifications.
+                                </p>
+                                <p style="color:black; font-size:10pt;">
+                                    Following Text is orginally taken from the FESTO Website:
+                                    <br>
+                                </p>
+                                <p style="color:black; font-size:10pt; font-size: 1vw;">
+                                    Robotino® is the mobile robot platform for research and education.
+                                    With its omnidirectional drive, sensors, interfaces and application-specific
+                                    extensions,
+                                    Robotino® can be used very flexibly. The most important programming languages and
+                                    systems
+                                    are available for programming individual applications. <br>
+                                    For further information we warmly refer you to the Festo Webpage.
+                                </p>
+                                <i>
+                                    https://www.festo-didactic.com/int-en/services/robotino/?fbid=aW50LmVuLjU1Ny4xNy4zNC4xMTY4
+                                    <br><br>
+                                </i>
+                                <p style="color:black; font-size:10pt; font-size: 1vw;">
+                                    For Handling packages or other handly materials Robotino got a gripper, which is
+                                    constructed
+                                    in Maker-Beam-Materials and controlled by a Geard-DC-Motor.
+                                    <br>
+                                    Also, Robotino got a landingplate or tailboard on top of its roof, which can flat in
+                                    the back-direction
+                                    to drop cared materials, controlled by a simple DC-Motor.
+                                    <br>
+                                    All these electrical additions are controlled by an Arduino NANO, getting
+                                    electricity through a DC-Converter
+                                    directly from Robotino. Arduino is connected to the Robotino Main-Controller to
+                                    controll all relevant options
+                                    on one platform. <br>
+                                </p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" id="headingSeven">
+            <h2 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseSeven"
+                    id="controll" aria-expanded="false" aria-controls="collapseSeven">
+                    About the Team
+                </button>
+            </h2>
+        </div>
+        <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven">
+            <div class="card-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-5">
+                            <table class="myTable2">
+                                <tr>
+                                    <th>Task</th>
+                                    <th>Name</th>
+                                    <th>ID</th>
+                                </tr>
+
+                                <tr>
+                                    <td>Teamleader/Programmer</td>
+                                    <td>Günz, Jonathan</td>
+                                    <td>183</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Hardware-Robotino</td>
+                                    <td>Karle, Norman</td>
+                                    <td>176</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Hardware-Robotino</td>
+                                    <td>Fischer, Valentin</td>
+                                    <td>189</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Programming-Drone</td>
+                                    <td>Depta, Martin</td>
+                                    <td>156</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Programming-Drone</td>
+                                    <td>Späth, Leandro</td>
+                                    <td>173</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Programming-Robotino</td>
+                                    <td>Ochsendorf, Marcel</td>
+                                    <td>153</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Programming-Robotino</td>
+                                    <td>Keunecke, Sophie Charlotte</td>
+                                    <td>201</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-7">
+                            <div class="container">
+                                <p style="color:black; font-size:19pt;">
+                                    <b>DARPA takes your factory to the future!
+                                        <br><i>-smart and autonomously</b></i></p>
+
+                                <p style="color:black; font-size:16pt;"><b>Idea description:</b></p>
+
+                                <p style="color:black; font-size: 12px; font-size: 1vw;">
+                                    With our flexible Robotino omnidirectional robot system combined with
+                                    lightweight
+                                    and
+                                    agile DJI Tello
+                                    drones we can handle your products, materials and possessions in your warehouse
+                                    and
+                                    more. The Robotino
+                                    can handle products and carry them autonomously to the specified target. It can
+                                    delegate
+                                    difficult to
+                                    reach deliveries and pickups to the attached drone. With its maximum flight time
+                                    of
+                                    10
+                                    minutes it can
+                                    reach targets up to 2km away.
+                                    <br>
+                                    No more slow and complicated transportation. Make it as fast as your ideas are!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="container">
+                                    <br>
+                                    <p style="color:black; font-size:16pt;"><b>Used platforms, gadgets:</p></b>
+
+                                    <p style="color:black; font-size: 12px; font-size: 1vw;">Festo Robotino V4
+                                        <br><i>
+                                            including Intel-RealSene, omnidirectional drive and bumper sensors (xBox
+                                            Controller)
+                                            <br></i>
+                                        DJI Trello Drone EDU
+                                        <br>
+                                        Maker-Beam, WS2811 (LED), 2x Servo, Arduino Nano, 2x Stepper-Motor, 1x
+                                        Gear-Motor,
+                                        Ethernet-Switch, Raspberry Pi, big amount of QR Codes
+                                        <br><i>
+                                            Software
+                                            <br></i>
+                                        ROS+RestAPI (Controlling) NodeJS, C++ (Aduino), Python (QR Code), MQTT
+                                        (Data-Transfer),
+                                        HTML+JS (HMI)
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <center><img src="img/HackerTeamShooting.jpg" id="teamfoto" width="500px"></center>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- -----------------------------------------------------------------------------------------  -->
+    <p></p>
+    <p>
+        <button class="btn btn-primary" type="button" onclick="change()">Close all</button>
+    </p>
+
+    <!-- Masthead -->
+    <form action="/register" method="GET">
+        <noscript>
+            <div class="alert alert-danger">
+                <strong>Fehler :</strong> Bitte aktivieren Sie Javascript um alle Features sehen zu koennen.
+            </div>
+        </noscript>
+    </form>
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <footer class="footer bg-light">
+        <div class="container text-center">
+            <div class="row">
+
+                <div class="col-lg-3 h-100 text-center text-lg-center my-auto">
+                    <a href="/"><img src="img/Logo_Darpa.png" height="180px"></a>
+                </div>
+                <div class="col-lg-4 h-100 text-center text-lg-center my-auto">
+                    <i>We want to say a big "Thank you" to all Festo-Members, which gave us the chance to work with such
+                        an incredible robot! </i>
+                </div>
+
+                <div class="col-lg-5 h-100 text-center text-lg-center my-auto">
+                    <a href="/"><img src="img/stghack2.png" height="80px"></a>
+                </div>
+
+            </div>
+        </div>
+
+
+
+    </footer>
+
+
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/2.0.4_socket.io.js"></script>
+    <script>
+        var socket = null;
+
+        function gripper(_data) {
+            if (socket == null) {
+                console.log("socket null");
+                return;
+            }
+            socket.emit('gripper', { 'action': _data });
+        }
+
+        function plattform(_data) {
+            if (socket == null) {
+                console.log("socket null");
+                return;
+            }
+            socket.emit('plattform', { 'action': _data });
+        }
+
+        function mv(_data) {
+            if (socket == null) {
+                console.log("socket null");
+                return;
+            }
+            socket.emit('mvcmd', { 'action': _data });
+        }
+        $(document).ready(function () {
+            socket = io();
+
+            var ctx = document.getElementById('img_cam0');
+
+
+            socket.on('powermanagement', function (data) {
+                $("#pwr_voltage").html("<b>" + Math.floor(data.status.voltage) + " V</b>");
+                if (data.status.batteryLow) {
+                    $("#pwr_batt").html("<b><font color='red'>BATTERY> LOW</font></b>");
+                } else {
+                    $("#pwr_batt").html("<b>BATTERY OK</b>");
+                }
+            });
+
+            socket.on("image_camera_0", function (info) {
+                if (info.image) {
+
+                    ctx.src = 'data:image/jpeg;base64,' + info.buffer;
+                }
+            });
+        });
+
+        function change() {
+            $('#collapseOne').collapse('hide')
+            $('#collapseTwo').collapse('hide')
+            $('#collapseThree').collapse('hide')
+            $('#collapseFour').collapse('hide')
+            $('#collapseFive').collapse('hide')
+            $('#collapseSix').collapse('hide')
+            $('#collapseSeven').collapse('hide')
+        };
+
+
+    </script>
+
+</body>
+
+</html>
