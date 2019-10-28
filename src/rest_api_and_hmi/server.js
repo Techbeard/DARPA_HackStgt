@@ -33,20 +33,30 @@ console.log(appDirectory);
 var db = new DB(path.join(appDirectory, 'db'), {});
 
 
-
+//odrive_parameters x -2 -> -2 y -2 -> -2 omega ?? not documented 
 var qr_code_funcations = [
-    { qr_data: "21", action: "forward", odrive_parameters: "[0.1,0,0]" },
-    { qr_data: "22", action: "backward", odrive_parameters: "[-0.1,0,0]" },
-    { qr_data: "23", action: "left", odrive_parameters:     "[-0.001,0.1,0]" },
-    { qr_data: "24", action: "right", odrive_parameters: "[0,-0.1,0.0]" },
-    { qr_data: "25", action: "forward_right", odrive_parameters: "[0.1,-0.1,0.0]" },
-    { qr_data: "26", action: "backward_right", odrive_parameters: "[-0.1,-0.1,0.0]" },
-    { qr_data: "27", action: "forward_left", odrive_parameters: "[0.1,0.1,0.0]" },
-    { qr_data: "28", action: "backward_left", odrive_parameters: "[-0.1,0.1,0.0]" },
-    { qr_data: "29", action: "rotate_left", odrive_parameters: "[0,0,1]" },
-    { qr_data: "30", action: "rotate_right", odrive_parameters: "[0,0,-1]" }
+    { qr_data: "21", action: "forward", odrive_parameters: odrive_parameters:{x:0.1,y:0,omega:0} },
+    { qr_data: "22", action: "backward", odrive_parameters: odrive_parameters:{x:-0.1,y:0,omega:0} },
+    { qr_data: "23", action: "left", odrive_parameters:     odrive_parameters:{x:0.0,y:0.1,omega:0} },
+    { qr_data: "24", action: "right", odrive_parameters: odrive_parameters:{x:0,y:-0.1,omega:0} },
+    { qr_data: "25", action: "forward_right", odrive_parameters: odrive_parameters:{x:-0.1,y:-0.1,omega:0} },
+    { qr_data: "26", action: "backward_right", odrive_parameters: odrive_parameters:{x:-0.1,y:-0.1,omega:0} },
+    { qr_data: "27", action: "forward_left", odrive_parameters: odrive_parameters:{x:0.1,y:0.1,omega:0} },
+    { qr_data: "28", action: "backward_left", odrive_parameters: odrive_parameters:{x:-0.1,y:0.1,omega:0} },
+    { qr_data: "29", action: "rotate_left", odrive_parameters: odrive_parameters:{x:0,y:0,omega:1} },
+    { qr_data: "30", action: "rotate_right", odrive_parameters: odrive_parameters:{x:0,y:0,omega:-1} }
 ];
 
+
+function build_odrive_parameters_request_body(movement_function, speed_multiplier){
+	if(movement_function == null || movement_function.odrive_parameters == null){
+		return null;
+	}
+	//the max m/s speed of the robot is 2m/s so we clamp it to this anf for -2 too
+	var x =  Math.max([Math.min([movement_function.odrive_parameters.x*speed_multiplier,2]),-2]);
+	var y = Math.max([Math.min([movement_function.odrive_parameters.y*speed_multiplier,2]),-2]);	
+	return "[" + String(x) + "," + String(y) + ","+String(movement_function.odrive_parameters.omega*speed_multiplier) + "]";
+}
 
 
 
@@ -439,11 +449,11 @@ setInterval(() => {
         console.log(robot_movement_state);
         request({
             url: 'http://127.0.0.1/data/omnidrive',
-            body: robot_movement_state.odrive_parameters,
+            body: build_odrive_parameters_request_body(robot_movement_state.odrive_parameters),
             json: false,
             method: 'POST',
         }, function (error, response, body) {
-            console.log(body.toJSON());
+            //console.log(body.toJSON());
         });
 
     });
