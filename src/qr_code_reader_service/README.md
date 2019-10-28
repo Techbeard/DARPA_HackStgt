@@ -1,5 +1,5 @@
 # QR CODE READER SERVICE
-This script read the 
+This script read the qr codes and sends the result to the rest api.
 
 ## PREQUELS
 
