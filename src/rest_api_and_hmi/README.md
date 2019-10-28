@@ -17,3 +17,8 @@ After startup the docker image, you can access the rest api und the hdmi. The po
 
 * HMI -> `/`
 * REST -> `/rest`
+
+
+# IMAGES 
+
+![alt text](/documenation/images_hmi/Robotino_HMI_offen.png "hmi")
