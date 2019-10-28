@@ -1,2 +1,2 @@
 #!bin/bash
-docker image build -t RBEGamer/hackathon_starter_template .
+docker image build -t RBEGamer/robotino_rest_hmi .
