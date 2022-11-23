@@ -28,7 +28,7 @@
     "sanitizer": "^0.1.3",
     "serialport": "^7.1.5",
     "sessionstore": "^1.3.5",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.5.0",
     "tingodb": "^0.6.1",
     "uuid": "^3.3.3",
     "web-push": "^3.4.1"
